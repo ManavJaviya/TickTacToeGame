@@ -1,9 +1,4 @@
 using TMPro;
-
-
-
-
-
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,12 +26,7 @@ public class GameOverUI : MonoBehaviour
         Hide();
     }
 
-    private void GameManager_OnGameTied(object sender, System.EventArgs e)
-    {
-        resultTextMesh.text = "Tie!";
-        resultTextMesh.color = tieColor;
-        Show();
-    }
+    
     private void GameManager_OnRematch(object sender, System.EventArgs e)
     {
         Hide();
@@ -50,10 +40,15 @@ public class GameOverUI : MonoBehaviour
         }
         else
         {
-
             resultTextMesh.text = "You Lose!";
             resultTextMesh.color = loseColor;
         }
+        Show();
+    }
+    private void GameManager_OnGameTied(object sender, System.EventArgs e)
+    {
+        resultTextMesh.text = "Tie!";
+        resultTextMesh.color = tieColor;
         Show();
     }
     private void Show()

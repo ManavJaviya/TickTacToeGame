@@ -17,4 +17,5 @@ public static class LobbyEvents
 
     // Game State Triggers
     public static UnityEvent OnLobbyFull = new UnityEvent();
+    public static UnityEvent OnGameShouldStart = new UnityEvent();
 }

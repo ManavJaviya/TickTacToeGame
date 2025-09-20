@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -16,8 +17,8 @@ public class PlayerUI : MonoBehaviour
         circleArrowGameObject.SetActive(false);
         crossYouTextGameObject.SetActive(false);
         circleYouTextGameObject.SetActive(false);
-        playerCrossScoreText.text = "";
-        playerCircleScoreText.text = "";
+        playerCrossScoreText.text = " ";
+        playerCircleScoreText.text = " ";
     }
 
     private void Start()
@@ -25,6 +26,11 @@ public class PlayerUI : MonoBehaviour
         GameManager.Instance.OnGameStarted += GameManager_OnGameStarted;
         GameManager.Instance.OnCurrentPlayablePlayerChanged += GameManager_OnCurrentPlayablePlayerChanged;
         GameManager.Instance.OnScoreChange += GameManager_OnScoreChange;
+
+        if (GameManager.Instance.IsGameStarted)
+        {
+            GameManager_OnGameStarted(this, EventArgs.Empty);
+        }
     }
 
     private void GameManager_OnScoreChange(object sender, System.EventArgs e)

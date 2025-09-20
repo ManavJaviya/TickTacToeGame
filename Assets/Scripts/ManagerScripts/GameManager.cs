@@ -5,13 +5,14 @@ using Unity.Collections;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
     public static GameManager Instance { get; private set; }
 
 
-// EVENTS
+    // EVENTS
     public event EventHandler<OnClickrsOnGridPositionEventArgs> OnClickrsOnGridPosition;
     public class OnClickrsOnGridPositionEventArgs : EventArgs
     {
@@ -32,9 +33,10 @@ public class GameManager : NetworkBehaviour
     public event EventHandler OnGameTied;
     public event EventHandler OnScoreChange;
     public event EventHandler OnPlaceObject;
+    public event EventHandler OnMenuBtnClicked;
 
 
-// REFERENCES
+    // REFERENCES
     public enum PlayerType
     {
         None,
@@ -62,12 +64,15 @@ public class GameManager : NetworkBehaviour
     private NetworkVariable<int> playerCrossScore = new NetworkVariable<int>();
     private NetworkVariable<int> playerCircleScore = new NetworkVariable<int>();
 
+    public bool IsGameStarted { get; private set; } = false;
 
     void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Debug.LogError("More than one GameManager instance");
+            Destroy(gameObject);
+            return;
         }
         Instance = this;
 
@@ -123,7 +128,7 @@ public class GameManager : NetworkBehaviour
     }
 
 
-//
+    //
     public override void OnNetworkSpawn()
     {
         Debug.Log("OnNetworkSpawn : " + NetworkManager.Singleton.LocalClientId);
@@ -154,7 +159,7 @@ public class GameManager : NetworkBehaviour
         };
     }
 
-//
+    //
     private void NetworkManager_OnClientConnectedCallback(ulong obj)
     {
         if (NetworkManager.Singleton.ConnectedClientsList.Count == 2)
@@ -167,11 +172,12 @@ public class GameManager : NetworkBehaviour
     [Rpc(SendTo.ClientsAndHost)]
     private void TriggerOnGameStartedRpc()
     {
+        IsGameStarted = true;
         OnGameStarted?.Invoke(this, EventArgs.Empty);
     }
 
 
-//
+    //
     [Rpc(SendTo.Server)]
     public void ClickedOnGrtidPositionRPC(int x, int y, PlayerType playerType)
     {
@@ -213,7 +219,6 @@ public class GameManager : NetworkBehaviour
         OnPlaceObject?.Invoke(this, EventArgs.Empty);
     }
 
-//
     private bool TestWinnerLine(Line line)
     {
         return TestWinnerLine(
@@ -252,7 +257,7 @@ public class GameManager : NetworkBehaviour
                         break;
                 }
                 TriggerOnGameWinRpc(i, winPlayerType);
-                break;
+                return;
             }
         }
         bool hasTie = true;
@@ -313,9 +318,33 @@ public class GameManager : NetworkBehaviour
     {
         return currentPlayablePlauerType.Value;
     }
-    public void GetScores(out int playerCrossScore,out int playerCircleScore)
+    public void GetScores(out int playerCrossScore, out int playerCircleScore)
     {
         playerCrossScore = this.playerCrossScore.Value;
         playerCircleScore = this.playerCircleScore.Value;
     }
+    public void MenuButtonClicked()
+    {
+        Debug.Log("GameManager received Menu Button Click. Firing event.");
+        // The ?.Invoke is a safe way to call the event, ensuring it's not null
+        OnMenuBtnClicked?.Invoke(this, EventArgs.Empty);
+    }
+    // public void RequestRestart()
+    // {
+    //     ResatrtServerRpc();
+    // }
+    // [ServerRpc(RequireOwnership = false)]
+    // private void ResatrtServerRpc()
+    // {
+    //     RestartAllClientRpc();
+    // }
+    // [ClientRpc]
+    // private void RestartAllClientRpc()
+    // {
+    //     if (!NetworkManager.Singleton.IsHost)
+    //     {
+    //         NetworkManager.Singleton.Shutdown();
+    //         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    //     }
+    // }
 }

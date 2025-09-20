@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 8135643181262201622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 8.79375, z: 1}
+  m_LocalPosition: {x: -0.07, y: 0.07, z: 0}
+  m_LocalScale: {x: 1.04, y: 1.02, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,12 +78,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: -4463496326876909577, guid: 80e842a7d109244d9bcef877672d070d, type: 3}
-  m_Color: {r: 0.9339623, g: 0.9339623, b: 0.9339623, a: 1}
+  m_Sprite: {fileID: -2188312221926730333, guid: 53b82f062ed7d4d639d21ed77bfc956f, type: 3}
+  m_Color: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_DrawMode: 2
+  m_Size: {x: 10.19, y: 10.11}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 888499507
-  InScenePlacedSourceGlobalObjectIdHash: 3179718517
+  GlobalObjectIdHash: 2926697251
+  InScenePlacedSourceGlobalObjectIdHash: 2926697251
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
